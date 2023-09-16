@@ -18,8 +18,8 @@ Please, configure the following environment variables:
 go build -o currency-loader
 ```
 
-2. Run the command
+1. Run the command
 ```bash
-./currency-bridge --date=2023-09-14
+./currency-loader --date=2023-09-14
 ```
 
