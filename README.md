@@ -13,12 +13,12 @@ Please, configure the following environment variables:
 
 ## Usage
 
-1. Build the solution
+#### Build the solution
 ```bash
 go build -o currency-loader
 ```
 
-1. Run the command
+#### Run the command
 ```bash
 ./currency-loader --date=2023-09-14
 ```
