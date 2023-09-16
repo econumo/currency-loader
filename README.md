@@ -1,6 +1,6 @@
-# Currency loader for Econumo
+# Currency loader for the Econumo
 
-Currency loader for Econumo is the bridge between the https://openexchangerates.org and the Econumo API.
+Currency loader for the Econumo is the bridge between the https://openexchangerates.org and the Econumo API.
 
 ## Configuration
 
