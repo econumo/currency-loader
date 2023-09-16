@@ -1,4 +1,4 @@
-module econumo-currency-bridge
+module econumo-currency-loader
 
 go 1.20
 
