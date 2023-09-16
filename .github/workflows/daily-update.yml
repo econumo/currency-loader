@@ -10,7 +10,7 @@ jobs:
 
     env:
       OPEN_EXCHANGE_RATES_TOKEN: ${{ secrets.OPEN_EXCHANGE_RATES_TOKEN }}
-      ECONUMO_API_TOKEN: ${{ secrets.ECONUMO_API_TOKEN }}
+      ECONUMO_API_KEY: ${{ secrets.ECONUMO_API_KEY }}
       ECONUMO_API_URL: ${{ vars.ECONUMO_API_URL }}
       SYMBOLS: ${{ vars.SYMBOLS }} # Set your desired SYMBOLS here, for example "USD,GBP,EUR"
       BASE_SYMBOL: ${{ vars.BASE_SYMBOL }}  # Set your desired BASE_SYMBOL here, for example "USD"
