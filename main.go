@@ -12,13 +12,28 @@ import (
 )
 
 type CurrenciesResponse struct {
-	Currencies map[string]string `json:"currencies"`
+	Currencies map[string]string `json:"-"`
+}
+
+type CurrenciesRequest struct {
+	Items []string `json:"items"`
 }
 
 type ExchangeRatesResponse struct {
 	Timestamp int64              `json:"timestamp"`
 	Base      string             `json:"base"`
 	Rates     map[string]float64 `json:"rates"`
+}
+
+type ExchangeRatesRequest struct {
+	Timestamp int64            `json:"timestamp"`
+	Base      string           `json:"base"`
+	Items     []CurrenciesRate `json:"items"`
+}
+
+type CurrenciesRate struct {
+	Code string `json:"code"`
+	Rate string `json:"rate"`
 }
 
 func main() {
@@ -55,7 +70,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to fetch currencies: %v", err)
 	}
-	defer respCurrencies.Body.Close()
 
 	if respCurrencies.StatusCode != 200 {
 		log.Fatalf("Failed to fetch currencies. Status code: %d", respCurrencies.StatusCode)
@@ -63,17 +77,25 @@ func main() {
 
 	// Parse the currencies JSON response
 	var currenciesResp CurrenciesResponse
-	err = json.NewDecoder(respCurrencies.Body).Decode(&currenciesResp)
+	// Unmarshal the JSON data into the struct
+	err = json.NewDecoder(respCurrencies.Body).Decode(&currenciesResp.Currencies)
 	if err != nil {
 		log.Fatalf("Failed to parse currencies response: %v", err)
 	}
+	defer respCurrencies.Body.Close()
 
 	// Create a filtered map of currencies based on SYMBOLS
-	filteredCurrencies := make(map[string]string)
+	var filteredCurrencies CurrenciesRequest
 	symbolList := strings.Split(symbols, ",")
-	for _, symbol := range symbolList {
-		if currencyName, ok := currenciesResp.Currencies[symbol]; ok {
-			filteredCurrencies[symbol] = currencyName
+	for code, _ := range currenciesResp.Currencies {
+		if symbols == "" {
+			filteredCurrencies.Items = append(filteredCurrencies.Items, code)
+		} else {
+			for _, symbol := range symbolList {
+				if symbol == code {
+					filteredCurrencies.Items = append(filteredCurrencies.Items, code)
+				}
+			}
 		}
 	}
 
@@ -97,6 +119,7 @@ func main() {
 		log.Fatalf("Failed to send currencies data to econumo API: %v", err)
 	}
 	defer resp.Body.Close()
+	fmt.Printf("Currencies sent to econumo API successfully: %s", string(currenciesJSON))
 
 	// Fetch currency rates from openexchangerates.org
 	var openExchangeRatesURL string
@@ -130,7 +153,13 @@ func main() {
 	}
 
 	// Send currency rates data to econumo API
-	exchangeRatesJSON, err := json.Marshal(exchangeRates)
+	var exchangeRatesRequest ExchangeRatesRequest
+	exchangeRatesRequest.Timestamp = exchangeRates.Timestamp
+	exchangeRatesRequest.Base = exchangeRates.Base
+	for code, rate := range exchangeRates.Rates {
+		exchangeRatesRequest.Items = append(exchangeRatesRequest.Items, CurrenciesRate{Code: code, Rate: fmt.Sprintf("%f", rate)})
+	}
+	exchangeRatesJSON, err := json.Marshal(exchangeRatesRequest)
 	if err != nil {
 		log.Fatalf("Failed to marshal combinedData to JSON: %v", err)
 	}
@@ -149,5 +178,5 @@ func main() {
 	}
 	defer resp.Body.Close()
 
-	fmt.Println("Data sent to econumo API successfully")
+	fmt.Printf("Currency rates sent to econumo API successfully: %s", string(exchangeRatesJSON))
 }
