@@ -43,7 +43,7 @@ func main() {
 
 	err := godotenv.Load()
 	if err != nil {
-		print("Error loading .env file")
+		fmt.Printf(".env file not found")
 	}
 	if os.Getenv("OPEN_EXCHANGE_RATES_TOKEN") == "" {
 		panic("OPEN_EXCHANGE_RATES_TOKEN is not specified")
