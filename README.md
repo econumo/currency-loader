@@ -23,3 +23,9 @@ go build -o currency-loader
 ./currency-loader --date=2023-09-14
 ```
 
+OR
+
+```bash
+./currency-loader 
+```
+

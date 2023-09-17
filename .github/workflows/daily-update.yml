@@ -28,4 +28,4 @@ jobs:
         run: go build -o currency-loader
 
       - name: Run the binary
-        run: ./currency-loader --date="$(\%Y-\%m-\%d)"
+        run: ./currency-loader
