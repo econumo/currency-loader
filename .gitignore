@@ -1,3 +1,5 @@
 .DS_Store
-.env
 currency-loader
+.env*
+
+!.env.example
