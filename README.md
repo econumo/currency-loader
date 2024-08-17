@@ -6,16 +6,20 @@ Currency loader for Econumo is the bridge between the https://openexchangerates.
 
 Please, configure the following environment variables:
 - `OPEN_EXCHANGE_RATES_TOKEN` - your Open Exchange Rates API key
-- `BASE_SYMBOL` - the base currency symbol (e.g. USD)
-- `SYMBOLS` - the list of currency symbols to load (e.g. USD,EUR,GBP)
+- `ECONUMO_CURRENCY_BASE` - the base currency symbol (e.g. USD)
+- `OPEN_EXCHANGE_RATES_SYMBOLS` - the list of currency symbols to load (e.g. USD,EUR,GBP)
 - `ECONUMO_API_URL` - Econumo API URL (e.g. https://api.econumo.com)
-- `ECONUMO_API_KEY` - System Econumo API key
+- `ECONUMO_SYSTEM_API_KEY` - System Econumo API key
 
 ## Usage
 
 #### Build the solution
 ```bash
 go build -o currency-loader
+```
+
+```bash
+GOOS=linux GOARCH=amd64 go build -o currency-loader
 ```
 
 #### Run the command

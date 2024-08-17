@@ -39,30 +39,31 @@ type CurrenciesRate struct {
 func main() {
 	// Parse command line arguments
 	datePtr := flag.String("date", "", "Specify the date in the format Y-M-d (e.g., 2023-09-14)")
+	envPathPtr := flag.String("env", ".env", "Specify the path to the .env file")
 	flag.Parse()
 
-	err := godotenv.Load()
+	err := godotenv.Load(*envPathPtr)
 	if err != nil {
-		fmt.Printf(".env file not found")
+		fmt.Printf(".env file not found at %s", *envPathPtr)
 	}
 	if os.Getenv("OPEN_EXCHANGE_RATES_TOKEN") == "" {
 		panic("OPEN_EXCHANGE_RATES_TOKEN is not specified")
 	}
-	if os.Getenv("BASE_SYMBOL") == "" {
-		panic("BASE_SYMBOL is not specified")
+	if os.Getenv("ECONUMO_CURRENCY_BASE") == "" {
+		panic("ECONUMO_CURRENCY_BASE is not specified")
 	}
 	if os.Getenv("ECONUMO_API_URL") == "" {
 		panic("ECONUMO_API_URL is not specified")
 	}
-	if os.Getenv("ECONUMO_API_KEY") == "" {
-		panic("ECONUMO_API_KEY is not specified")
+	if os.Getenv("ECONUMO_SYSTEM_API_KEY") == "" {
+		panic("ECONUMO_SYSTEM_API_KEY is not specified")
 	}
 
 	openExchangeRatesToken := os.Getenv("OPEN_EXCHANGE_RATES_TOKEN")
-	symbols := os.Getenv("SYMBOLS")
-	baseSymbol := os.Getenv("BASE_SYMBOL")
+	symbols := os.Getenv("OPEN_EXCHANGE_RATES_SYMBOLS")
+	baseSymbol := os.Getenv("ECONUMO_CURRENCY_BASE")
 	econumoAPIURL := os.Getenv("ECONUMO_API_URL")
-	econumoAPIKey := os.Getenv("ECONUMO_API_KEY")
+	econumoAPIKey := os.Getenv("ECONUMO_SYSTEM_API_KEY")
 
 	currenciesURL := fmt.Sprintf("https://openexchangerates.org/api/currencies.json?app_id=%s", openExchangeRatesToken)
 	respCurrencies, err := http.Get(currenciesURL)
@@ -84,7 +85,7 @@ func main() {
 	}
 	defer respCurrencies.Body.Close()
 
-	// Create a filtered map of currencies based on SYMBOLS
+	// Create a filtered map of currencies based on OPEN_EXCHANGE_RATES_SYMBOLS
 	var filteredCurrencies CurrenciesRequest
 	symbolList := strings.Split(symbols, ",")
 	for code, _ := range currenciesResp.Currencies {

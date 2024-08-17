@@ -1,8 +1,8 @@
 name: Daily update
 
-on:
-  schedule:
-    - cron: '0 12 * * *'  # Schedule the job to run every day at noon UTC
+#on:
+#  schedule:
+#    - cron: '0 12 * * *'  # Schedule the job to run every day at noon UTC
 
 jobs:
   build-and-run:
@@ -10,10 +10,10 @@ jobs:
 
     env:
       OPEN_EXCHANGE_RATES_TOKEN: ${{ secrets.OPEN_EXCHANGE_RATES_TOKEN }}
-      ECONUMO_API_KEY: ${{ secrets.ECONUMO_API_KEY }}
+      ECONUMO_SYSTEM_API_KEY: ${{ secrets.ECONUMO_API_KEY }}
       ECONUMO_API_URL: ${{ vars.ECONUMO_API_URL }}
-      SYMBOLS: ${{ vars.SYMBOLS }} # Set your desired SYMBOLS here, for example "USD,GBP,EUR"
-      BASE_SYMBOL: ${{ vars.BASE_SYMBOL }}  # Set your desired BASE_SYMBOL here, for example "USD"
+      OPEN_EXCHANGE_RATES_SYMBOLS: ${{ vars.SYMBOLS }} # Set your desired SYMBOLS here, for example "USD,GBP,EUR"
+      ECONUMO_CURRENCY_BASE: ${{ vars.BASE_SYMBOL }}  # Set your desired BASE_SYMBOL here, for example "USD"
 
     steps:
       - name: Checkout code
@@ -22,7 +22,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: '1.16'  # Set your preferred Go version
+          go-version: '1.23'  # Set your preferred Go version
 
       - name: Build the solution
         run: go build -o currency-loader

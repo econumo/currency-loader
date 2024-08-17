@@ -1,5 +1,6 @@
 .DS_Store
 currency-loader
+.idea
 .env*
 
 !.env.example
