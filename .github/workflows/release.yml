@@ -23,13 +23,13 @@ jobs:
           go-version: '1.23'
 
       - name: Build for Windows
-        run: GOOS=windows GOARCH=amd64 go build -o postman-to-readme-windows-amd64.exe
+        run: GOOS=windows GOARCH=amd64 go build -o currency-loader-windows-amd64.exe
 
       - name: Build for macOS
-        run: GOOS=darwin GOARCH=amd64 go build -o postman-to-readme-darwin-amd64
+        run: GOOS=darwin GOARCH=amd64 go build -o currency-loader-darwin-amd64
 
       - name: Build for Linux
-        run: GOOS=linux GOARCH=amd64 go build -o postman-to-readme-linux-amd64
+        run: GOOS=linux GOARCH=amd64 go build -o currency-loader-linux-amd64
 
       - name: Get current date
         id: date
@@ -52,8 +52,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./postman-to-readme-windows-amd64.exe
-          asset_name: postman-to-readme-windows-amd64.exe
+          asset_path: ./currency-loader-windows-amd64.exe
+          asset_name: currency-loader-windows-amd64.exe
           asset_content_type: application/octet-stream
 
       - name: Upload macOS asset
@@ -62,8 +62,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./postman-to-readme-darwin-amd64
-          asset_name: postman-to-readme-darwin-amd64
+          asset_path: ./currency-loader-darwin-amd64
+          asset_name: currency-loader-darwin-amd64
           asset_content_type: application/octet-stream
 
       - name: Upload Linux asset
@@ -72,6 +72,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./postman-to-readme-linux-amd64
-          asset_name: postman-to-readme-linux-amd64
+          asset_path: ./currency-loader-linux-amd64
+          asset_name: currency-loader-linux-amd64
           asset_content_type: application/octet-stream
