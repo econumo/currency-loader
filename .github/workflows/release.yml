@@ -28,8 +28,11 @@ jobs:
       - name: Build for macOS
         run: GOOS=darwin GOARCH=amd64 go build -o currency-loader-darwin-amd64
 
-      - name: Build for Linux
+      - name: Build for Linux AMD64
         run: GOOS=linux GOARCH=amd64 go build -o currency-loader-linux-amd64
+
+      - name: Build for Linux ARM64
+        run: GOOS=linux GOARCH=arm64 go build -o currency-loader-linux-arm64
 
       - name: Get current date
         id: date
@@ -66,7 +69,7 @@ jobs:
           asset_name: currency-loader-darwin-amd64
           asset_content_type: application/octet-stream
 
-      - name: Upload Linux asset
+      - name: Upload Linux AMD64 asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -74,4 +77,14 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./currency-loader-linux-amd64
           asset_name: currency-loader-linux-amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux ARM64 asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./currency-loader-linux-arm64
+          asset_name: currency-loader-linux-arm64
           asset_content_type: application/octet-stream
