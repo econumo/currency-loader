@@ -52,8 +52,8 @@ func main() {
 	if os.Getenv("ECONUMO_CURRENCY_BASE") == "" {
 		panic("ECONUMO_CURRENCY_BASE is not specified")
 	}
-	if os.Getenv("ECONUMO_API_URL") == "" {
-		panic("ECONUMO_API_URL is not specified")
+	if os.Getenv("ECONUMO_BASE_URL") == "" {
+		panic("ECONUMO_BASE_URL is not specified")
 	}
 	if os.Getenv("ECONUMO_SYSTEM_API_KEY") == "" {
 		panic("ECONUMO_SYSTEM_API_KEY is not specified")
@@ -62,7 +62,7 @@ func main() {
 	openExchangeRatesToken := os.Getenv("OPEN_EXCHANGE_RATES_TOKEN")
 	symbols := os.Getenv("OPEN_EXCHANGE_RATES_SYMBOLS")
 	baseSymbol := os.Getenv("ECONUMO_CURRENCY_BASE")
-	econumoAPIURL := os.Getenv("ECONUMO_API_URL")
+	econumoBaseURL := os.Getenv("ECONUMO_BASE_URL")
 	econumoAPIKey := os.Getenv("ECONUMO_SYSTEM_API_KEY")
 
 	currenciesURL := fmt.Sprintf("https://openexchangerates.org/api/currencies.json?app_id=%s", openExchangeRatesToken)
@@ -106,7 +106,7 @@ func main() {
 		log.Fatalf("Failed to marshal filteredCurrencies to JSON: %v", err)
 	}
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/system/import-currency-list", econumoAPIURL), strings.NewReader(string(currenciesJSON)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/system/import-currency-list", econumoBaseURL), strings.NewReader(string(currenciesJSON)))
 	if err != nil {
 		log.Fatalf("Failed to create request to send currencies data to econumo API: %v", err)
 	}
@@ -165,7 +165,7 @@ func main() {
 		log.Fatalf("Failed to marshal combinedData to JSON: %v", err)
 	}
 
-	req, err = http.NewRequest("POST", fmt.Sprintf("%s/api/v1/system/import-currency-rates", econumoAPIURL), strings.NewReader(string(exchangeRatesJSON)))
+	req, err = http.NewRequest("POST", fmt.Sprintf("%s/api/v1/system/import-currency-rates", econumoBaseURL), strings.NewReader(string(exchangeRatesJSON)))
 	if err != nil {
 		log.Fatalf("Failed to create request to send data to econumo API: %v", err)
 	}
