@@ -119,6 +119,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to send currencies data to econumo API: %v", err)
 	}
+	if resp.StatusCode != 200 {
+		log.Fatalf("Failed to send currencies data to econumo API. Status code: %d", resp.StatusCode)
+	}
 	defer resp.Body.Close()
 	fmt.Printf("Currencies sent to econumo API successfully: %s", string(currenciesJSON))
 
@@ -176,6 +179,9 @@ func main() {
 
 	if err != nil {
 		log.Fatalf("Failed to send data to econumo API: %v", err)
+	}
+	if resp.StatusCode != 200 {
+		log.Fatalf("Failed to send data to econumo API. Status code: %d", resp.StatusCode)
 	}
 	defer resp.Body.Close()
 
