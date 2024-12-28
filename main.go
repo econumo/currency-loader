@@ -119,8 +119,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to send currencies data to econumo API: %v", err)
 	}
+	if resp.StatusCode != 200 {
+		log.Fatalf("Failed to send currencies data to econumo API. Status code: %d", resp.StatusCode)
+	}
 	defer resp.Body.Close()
-	fmt.Printf("Currencies sent to econumo API successfully: %s", string(currenciesJSON))
+	fmt.Printf("Currencies sent to econumo API successfully: %s\n", string(currenciesJSON))
 
 	// Fetch currency rates from openexchangerates.org
 	var openExchangeRatesURL string
@@ -177,7 +180,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to send data to econumo API: %v", err)
 	}
+	if resp.StatusCode != 200 {
+		log.Fatalf("Failed to send data to econumo API. Status code: %d", resp.StatusCode)
+	}
 	defer resp.Body.Close()
 
-	fmt.Printf("Currency rates sent to econumo API successfully: %s", string(exchangeRatesJSON))
+	fmt.Printf("Currency rates sent to econumo API successfully: %s\n", string(exchangeRatesJSON))
 }
