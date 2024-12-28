@@ -3,6 +3,8 @@
 The Currency Loader for Econumo acts as a bridge between [Open Exchange Rates](https://openexchangerates.org) and
 the [Econumo System API](https://econumo.com/docs/api/).
 
+It will create the specified currencies and automatically update their exchange rates.
+
 ---
 > [!NOTE]
 > In the free tier of Open Exchange Rates, only **USD** is supported as a base currency.
@@ -25,21 +27,25 @@ Please, configure the following environment variables:
 
 ## Usage
 
-Loading the exchange rates once a day is sufficient. 
+Loading the exchange rates once a day is sufficient, so you can configure it to run daily early in the morning.
 
-### Build the solution
+Additionally, you can manually load retrospective exchange rates.
+
+
+### Getting a binary
+
+Instead of building the solution yourself, you can download the latest binary from the [releases page](https://github.com/econumo/currency-loader/releases).
+
+To build manually, use the following command:
 
 ```bash
 go build -o currency-loader
 ```
 
-```bash
-GOOS=linux GOARCH=amd64 go build -o currency-loader
-```
 
-### Loading currencies and their exchange rates
+### Loading currencies and their exchange rates into your Econumo
 
-To load the currency exchange rates for today, use the following command:
+To load the latest currency exchange rates (for today), use the following command:
 
 ```bash
 ./currency-loader 
