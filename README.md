@@ -8,7 +8,7 @@ It will create the specified currencies and automatically update their exchange 
 ---
 > [!NOTE]
 > In the free tier of Open Exchange Rates, only **USD** is supported as a base currency.
-> This shouldn't be an issue for most users, as the base currency is only used for conversions.
+> This shouldn't be an issue for most users, as the base currency is only used for conversions and **this is not your default currency**.
 >
 > **For example**: If you have most of your accounts in CAD (Canadian Dollar) and one savings account in USD, the currency
 > conversion will occur in two scenarios:
