@@ -10,7 +10,7 @@ It will create the specified currencies and automatically update their exchange 
 > In the free tier of Open Exchange Rates, only **USD** is supported as a base currency.
 > This shouldn't be an issue for most users, as the base currency is only used for conversions.
 >
-> For example: If you have most of your accounts in CAD (Canadian Dollar) and one savings account in USD, the currency
+> **For example**: If you have most of your accounts in CAD (Canadian Dollar) and one savings account in USD, the currency
 > conversion will occur in two scenarios:
 > 1. When you transfer money from your CAD account to your USD account.
 > 2. In your budget, if you choose to convert spending to other currencies.
