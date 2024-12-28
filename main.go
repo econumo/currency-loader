@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/joho/godotenv"
+	"io"
 	"log"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/joho/godotenv"
 )
 
 type CurrenciesResponse struct {
@@ -108,7 +110,7 @@ func main() {
 
 	req, err := http.NewRequest("POST", fmt.Sprintf("%s/api/v1/system/import-currency-list", econumoBaseURL), strings.NewReader(string(currenciesJSON)))
 	if err != nil {
-		log.Fatalf("Failed to create request to send currencies data to econumo API: %v", err)
+		log.Fatalf("Failed to create request to send currencies to Econumo API: %v", err)
 	}
 	req.Header.Set("Authorization", econumoAPIKey)
 	req.Header.Set("Content-Type", "application/json")
@@ -117,13 +119,13 @@ func main() {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		log.Fatalf("Failed to send currencies data to econumo API: %v", err)
+		log.Fatalf("Failed to send currencies to Econumo API: %v\n\n", err)
 	}
 	if resp.StatusCode != 200 {
-		log.Fatalf("Failed to send currencies data to econumo API. Status code: %d", resp.StatusCode)
+		log.Fatalf("Failed to send currencies to econumo API. Status code: %d\n\n", resp.StatusCode)
 	}
 	defer resp.Body.Close()
-	fmt.Printf("Currencies sent to econumo API successfully: %s\n", string(currenciesJSON))
+	fmt.Printf("Currencies sent to econumo API successfully: %s\n\n", string(currenciesJSON))
 
 	// Fetch currency rates from openexchangerates.org
 	var openExchangeRatesURL string
@@ -170,20 +172,30 @@ func main() {
 
 	req, err = http.NewRequest("POST", fmt.Sprintf("%s/api/v1/system/import-currency-rates", econumoBaseURL), strings.NewReader(string(exchangeRatesJSON)))
 	if err != nil {
-		log.Fatalf("Failed to create request to send data to econumo API: %v", err)
+		log.Fatalf("Failed to create request to send currency rates to Econumo API: %v", err)
 	}
 	req.Header.Set("Authorization", econumoAPIKey)
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err = client.Do(req)
-
 	if err != nil {
-		log.Fatalf("Failed to send data to econumo API: %v", err)
+		log.Fatalf("Failed to send currency rates to Econumo API: %v\n\n", err)
 	}
 	if resp.StatusCode != 200 {
-		log.Fatalf("Failed to send data to econumo API. Status code: %d", resp.StatusCode)
+		log.Fatalf("Failed to send currency rates to Econumo API. Status code: %d\n\n", resp.StatusCode)
 	}
 	defer resp.Body.Close()
+
+	// Add better error handling and response logging
+	if resp.StatusCode != http.StatusOK {
+		// Read the response body for error details
+		bodyBytes, err := io.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatalf("Failed to read error response body: %v", err)
+		}
+		log.Fatalf("Failed to send data to econumo API. Status code: %d, Response: %s",
+			resp.StatusCode, string(bodyBytes))
+	}
 
 	fmt.Printf("Currency rates sent to econumo API successfully: %s\n", string(exchangeRatesJSON))
 }
