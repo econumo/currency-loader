@@ -1,5 +1,11 @@
 # Currency loader for Econumo
 
+
+> [!WARNING]
+> This tool is deprecated.
+> To update exchange rates, use the built-in command starting with Econumo v0.8.0. For more information, see the [documentation](https://econumo.com/docs/self-hosting/multi-currency/).
+
+---
 The Currency Loader for Econumo acts as a bridge between [Open Exchange Rates](https://openexchangerates.org) and
 the [Econumo System API](https://econumo.com/docs/api/).
 
